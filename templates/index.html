@@ -1,0 +1,52 @@
+
+{% extends 'base.html' %}
+
+{% block title %}Coffee and Wifi{% endblock %}
+
+{% block content %}
+<div class="container">
+
+  <div class="row">
+    <div class="col-12 d-flex flex-column justify-content-center align-items-center pt-2">
+        <h1 class="display-1 py-3 text-standout pacifico-regular">☕️ Café Explorer 💻</h1>
+        <p class="lead text-standout fs-1 barlow-bold text-uppercase">Discover the Best Cafes in the UK</p>
+
+    </div>
+  </div>
+
+    <div class="row">
+        <div class="col-12 d-flex flex-column justify-content-center align-items-center pb-3 pt-2">
+            <div class="col-8">
+                <p class="text-center lead text-standout fs-3 barlow-medium">Explore based on what matters most to you</p>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12 d-flex justify-content-center align-items-center pt-2 mt-1">
+            <form action="{{ url_for('home') }}" method="POST" class="pt-1 mt-1">
+                {{ form.hidden_tag() }}
+
+                <div class="d-flex flex-column align-items-center mt-4">
+                    <p class="text-center text-standout barlow-regular fs-2 mb-1">Search by:</p>
+                </div>
+
+                <div class="d-flex flex-column align-items-center mt-3">
+                    <p class="text-center text-standout barlow-regular fs-3 mb-1">{{ form.location.label }}</p>
+                    {{ form.location(class="form-control") }}
+                </div>
+                <div class="d-flex flex-column align-items-center py-1 barlow-regular fs-3">or
+                </div>
+                <div class="d-flex flex-column align-items-center mb-4">
+                    <p class="text-center text-standout barlow-regular fs-3 mb-1">{{ form.location_select.label }}</p>
+                    {{ form.location_select(class="form-select") }}
+                </div>
+                <div class="d-flex justify-content-center">
+                    {{ form.submit(class="btn btn-warning btn-lg barlow-regular") }}
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

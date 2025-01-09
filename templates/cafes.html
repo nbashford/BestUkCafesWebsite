@@ -1,0 +1,215 @@
+{% extends 'base.html' %}
+
+{% block title %}All Cafes{% endblock %}
+
+{% block content %}
+<div class="col-12 d-flex justify-content-center align-items-center py-4">
+  <h1 class="text-standout pacifico-regular">All Cafes</h1>
+</div>
+<hr style="border-top: 4px solid #fff; opacity: 1; width: 85%; margin: 0 auto;">
+
+<div class="container">
+  <div class="row pb-3">
+
+    <div class="col-12">
+      <form action="{{ url_for('cafes') }}" method="POST" >
+        {{ form.hidden_tag() }}
+          <div class="d-flex mb-3">
+              <div class="p-2">
+              <label class="form-label">{{ form.cafe_name.label }}</label>
+              {{ form.cafe_name(class="form-select", style="max-width: 200px;") }}
+            </div>
+            <div class="p-2">
+              <label class="form-label">{{ form.city_location.label }}</label>
+              {{ form.city_location(class="form-select", style="max-width: 200px;") }}
+            </div>
+            <div class="p-2">
+              <label class="form-label">{{ form.has_wifi.label }}</label>
+              {{ form.has_wifi(class="form-select") }}
+            </div>
+              <div class="p-2">
+              <label class="form-label">{{ form.need_laptop.label }}</label>
+              {{ form.need_laptop(class="form-select") }}
+            </div>
+              <div class="p-2">
+              <label class="form-label">{{ form.need_pets.label }}</label>
+              {{ form.need_pets(class="form-select") }}
+            </div>
+              <div class="p-2">
+              <label class="form-label">{{ form.day_open.label }}</label>
+              {{ form.day_open(class="form-select") }}
+            </div>
+            <div class="ms-auto p-2">
+              <br>
+              {{ form.submit_one(class="btn btn-warning", value="Apply Filters") }}</div>
+            <div class="p-2">
+              <br>
+              {{ form.clear_filters(class="btn btn-secondary", value="Clear Filters") }}</div>
+          </div>
+      </form>
+    </div>
+
+
+    <div class="col-12 d-flex justify-content-center align-items-center">
+
+      <table class="table transparent-table table-hover align-middle table-dark">
+        <colgroup>
+            {% if current_user.is_authenticated %}
+              <col style="width: 5%;">
+              <col style="width: {{ 18 * 0.95 }}%;">
+              <col style="width: {{ 18 * 0.95 }}%;">
+              <col style="width: {{ 10 * 0.95 }}%;">
+              <col style="width: {{ 21 * 0.95 }}%;">
+              <col style="width: {{ 11 * 0.95 }}%;">
+              <col style="width: {{ 11 * 0.95 }}%;">
+              <col style="width: {{ 11 * 0.95 }}%;">
+            {% else %}
+              <col style="width: 18%;">
+              <col style="width: 18%;">
+              <col style="width: 10%;">
+              <col style="width: 21%;">
+              <col style="width: 11%;">
+              <col style="width: 11%;">
+              <col style="width: 11%;">
+            {% endif %}
+        </colgroup>
+
+        <thead>
+        <tr>
+            {% if current_user.is_authenticated %}
+            <td class="lead fs-3 text-center fw-bold"></td>
+            {% endif %}
+          <td class="lead fs-3 text-center fw-bold">Cafe Name</td>
+          <td class="lead fs-3 text-center fw-bold">Address</td>
+          <td class="lead fs-3 text-center fw-bold">Location</td>
+          <td class="lead fs-3 text-center fw-bold">Opening</td>
+          <td class="lead fs-3 text-center fw-bold">Wifi</td>
+          <td class="lead fs-3 text-center fw-bold">Laptops</td>
+          <td class="lead fs-3 text-center fw-bold">Pets</td>
+        </tr>
+         </thead>
+        <tbody class="table-group-divider">
+        {% for row in cafes %}
+        <tr class="py-3">
+            {% if current_user.is_authenticated %}
+             <td class="text-center fw-semibold fs-5">
+                 <form action="{{ url_for('cafes') }}" method="POST" style="display: inline;">
+                <input type="hidden" name="cafe_id" value="{{ row.id }}">
+                     <input type="hidden" name="page_num" value="{{ page_num }}">
+                <button type="submit" style="background: none; border: none; padding: 0;">
+                    {% if row.id in favourite_cafe_ids %}
+                    <img src="{{ url_for('static', filename='images/heart-svgrepo-com-2.svg') }}" alt="Favourite" width="32" height="32" class="rounded-circle">
+                    {% else %}
+                    <img src="{{ url_for('static', filename='images/heart-svgrepo-com.svg') }}" alt="Not Favourite" width="32" height="32" class="rounded-circle">
+                    {% endif %}
+                </button>
+            </form>
+            </td>
+            {% endif %}
+
+          <td class="text-center fw-semibold fs-5">
+            <p class="fw-semibold fs-5">
+              {{ row.name }}
+            </p>
+
+          </td>
+          <td class="text-center fw-medium">{{ row.street }},<br>{{ row.city }}, {{ row.postcode }}</td>
+          <td class="text-center fw-medium text-standout"><a href="{{ row.link }}">Maps Link</a></td>
+          <td class="fw-medium">
+            {{ row.opening.split('|') | join('<br>') | safe }}
+          </td>
+          <td class="text-center fw-medium">{{ row.wifi }}</td>
+          <td class="text-center fw-medium">{{ row.laptop }}</td>
+          <td class="text-center fw-medium">{{ row.pets }}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="container">
+      <div class="row">
+
+        <div class="col-4">
+          <p><a href="{{ url_for('home') }}">Return to index page</a></p>
+        </div>
+        <div class="col-4">
+        </div>
+        <div class="col-4">
+          <form action="{{ url_for('cafes') }}" method="POST" >
+            {{ form_page.hidden_tag() }}
+
+            <div class="d-flex mb-3">
+              <div class="ms-auto p-2">
+                <label class="form-label">{{ form_page.page_select.label }}</label>
+              </div>
+              <div class="p-2">{{ form_page.page_select(class="form-select") }}</div>
+              <div class="p-2">{{ form_page.submit(class="btn btn-warning") }}</div>
+            </div>
+          </form>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+
+</div>
+{% endblock %}
+
+{% block script %}
+
+const cafes = ["Cafe Latte", "Brew & Bean", "Espresso Express", "Morning Roast", "Cozy Corner"]; // Example cafe list
+    const dropdownMenu = document.getElementById("dropdownMenu");
+    const cafeInput = document.getElementById("cafeInput");
+
+    // Function to populate the dropdown menu with filtered cafes
+    function populateDropdown(filteredCafes) {
+      dropdownMenu.innerHTML = ""; // Clear the existing dropdown menu
+
+      if (filteredCafes.length === 0) {
+        const noResultItem = document.createElement("li");
+        noResultItem.className = "dropdown-item text-muted";
+        noResultItem.textContent = "No matching cafes";
+        dropdownMenu.appendChild(noResultItem);
+        return;
+      }
+
+      filteredCafes.forEach(cafe => {
+        const listItem = document.createElement("li");
+        const anchor = document.createElement("a");
+        anchor.className = "dropdown-item";
+        anchor.href = "#";
+        anchor.textContent = cafe;
+        anchor.addEventListener("click", () => {
+          cafeInput.value = cafe;
+          populateDropdown(cafes);
+          dropdownMenu.classList.remove("show"); // Hide the dropdown when an item is selected
+        });
+        listItem.appendChild(anchor);
+        dropdownMenu.appendChild(listItem);
+      });
+    }
+
+    // Event listener for the input field
+    cafeInput.addEventListener("input", () => {
+      const query = cafeInput.value.toLowerCase();
+      const filteredCafes = cafes.filter(cafe => cafe.toLowerCase().includes(query));
+
+      if (query) {
+        dropdownMenu.classList.add("show"); // Show the dropdown when the user starts typing
+        populateDropdown(filteredCafes);
+      } else {
+        dropdownMenu.classList.remove("show"); // Hide the dropdown when the input is empty
+      }
+    });
+
+    // Optional: Hide the dropdown if the user clicks outside of the input field
+    document.addEventListener("click", (event) => {
+      if (!event.target.closest(".input-group")) {
+        dropdownMenu.classList.remove("show");
+      }
+    });
+
+{% endblock %}

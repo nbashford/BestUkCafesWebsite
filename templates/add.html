@@ -1,0 +1,247 @@
+{% extends 'base.html' %}
+{% from 'bootstrap5/form.html' import render_form %}
+
+{% block title %}Add A New Cafe{% endblock %}
+{% block content %}
+
+<div class="container-fluid">
+  <div class="row">
+      {% if not 'monday_morn' in form._fields %}
+
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                <div class="col-12 d-flex justify-content-center align-items-center pt-2">
+                    {% for message in messages %}
+                        <h1>{{ message }}</h1>
+                    {% endfor %}
+                </div>
+                <div class="col-12 d-flex justify-content-center align-items-center py-2">
+                    <h1 class="pacifico-regular">Add another Cafe into the database</h1>
+                </div>
+                {% else %}
+                <div class="col-12 d-flex justify-content-center align-items-center py-5">
+                    <h1 class="pacifico-regular"
+                    >Add a Cafe into the database</h1>
+                </div>
+
+                <div class="col-12 d-flex justify-content-center align-items-center pb-1">
+                    <div class="col-6">
+                        <p class="text-standout lead fs-4 text-center">
+                    Found a great cafe not listed yet? Share it with us!<br>Add the details below, and we'll review it for inclusion.
+                    </p>
+
+                    </div>
+                </div>
+                {% endif %}
+            {% endwith %}
+      {% else %}
+        <div class="col-12 d-flex justify-content-center align-items-center pt-2">
+            <h1>Add additional Cafe details</h1>
+        </div>
+      {% endif %}
+  </div>
+
+    {% if not 'monday_morn' in form._fields %}
+    <div class="row justify-content-center mt-2 pt-2">
+        <div class="col-4">
+            {{ render_form(form, novalidate=True) }}
+        </div>
+    </div>
+    {% else %}
+    <div class="row justify-content-center">
+        <div class="col-4">
+        <div class="container-fluid d-flex justify-content-center align-items-center">
+                <form action="{{ url_for('add_cafe') }}" method="POST" class="w-100">
+                    {{ form.hidden_tag() }}
+                    <div class="row py-2 justify-content-center">
+                        <div class="col">
+                            <label class="form-label fs-5">Has Free Wi-fi?</label>
+                                {{ form.wifi(class="form-select") }}
+                        </div>
+                    </div>
+                    <div class="row py-2 justify-content-center">
+                        <div class="col">
+                            <label class="form-label fs-5">Is Laptop Friendly</label>
+                            {{ form.laptop(class="form-select") }}
+                        </div>
+                    </div>
+                    <div class="row py-2 justify-content-center">
+                        <div class="col">
+                            <label class="form-label fs-5">Is Pet Friendly</label>
+                            {{ form.pets(class="form-select") }}
+                        </div>
+                    </div>
+                    <div class="row pt-2 justify-content-center">
+                        <div class="col text-center">
+                            <label class="form-label fs-5">Opening Times</label>
+                        </div>
+                    </div>
+                    <div class="row py-2 justify-content-center">
+                        <div class="col">
+                            <div class="row pb-1">
+                                <div class="col-3">
+                                    <label class="form-label fs-5">Monday:</label>
+                                </div>
+                                <div class="col">
+                                    <div class="row">
+                                        <div class="col-2">
+                                            <label class="form-label fs-5">Open</label>
+                                        </div>
+                                        <div class="col">
+                                            {{ form.monday_morn(class="form-select") }}
+                                        </div>
+                                        <div class="col-2">
+                                            <label class="form-label fs-5">Close</label>
+                                        </div>
+                                        <div class="col">
+                                            {{ form.monday_eve(class="form-select") }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row pb-1">
+                                <div class="col-3">
+                                    <label class="form-label fs-5">Tuesday:</label>
+                                </div>
+                                <div class="col">
+                                    <div class="row">
+                                        <div class="col-2">
+                                            <label class="form-label fs-5">Open</label>
+                                        </div>
+                                        <div class="col">
+                                            {{ form.tuesday_morn(class="form-select") }}
+                                        </div>
+                                        <div class="col-2">
+                                            <label class="form-label fs-5">Close</label>
+                                        </div>
+                                        <div class="col">
+                                            {{ form.tuesday_eve(class="form-select") }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row pb-1">
+                                <div class="col-3">
+                                    <label class="form-label fs-5">Wednesday:</label>
+                                </div>
+                                <div class="col">
+                                    <div class="row">
+                                        <div class="col-2">
+                                            <label class="form-label fs-5">Open</label>
+                                        </div>
+                                        <div class="col">
+                                            {{ form.wednesday_morn(class="form-select") }}
+                                        </div>
+                                        <div class="col-2">
+                                            <label class="form-label fs-5">Close</label>
+                                        </div>
+                                        <div class="col">
+                                            {{ form.wednesday_eve(class="form-select") }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row pb-1">
+                                <div class="col-3">
+                                    <label class="form-label fs-5">Thursday:</label>
+                                </div>
+                                <div class="col">
+                                    <div class="row">
+                                        <div class="col-2">
+                                            <label class="form-label fs-5">Open</label>
+                                        </div>
+                                        <div class="col">
+                                            {{ form.thursday_morn(class="form-select") }}
+                                        </div>
+                                        <div class="col-2">
+                                            <label class="form-label fs-5">Close</label>
+                                        </div>
+                                        <div class="col">
+                                            {{ form.thursday_eve(class="form-select") }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row pb-1">
+                                <div class="col-3">
+                                    <label class="form-label fs-5">Friday:</label>
+                                </div>
+                                <div class="col">
+                                    <div class="row">
+                                        <div class="col-2">
+                                            <label class="form-label fs-5">Open</label>
+                                        </div>
+                                        <div class="col">
+                                            {{ form.friday_morn(class="form-select") }}
+                                        </div>
+                                        <div class="col-2">
+                                            <label class="form-label fs-5">Close</label>
+                                        </div>
+                                        <div class="col">
+                                            {{ form.friday_eve(class="form-select") }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row pb-1">
+                                <div class="col-3">
+                                    <label class="form-label fs-5">Saturday:</label>
+                                </div>
+
+                                <div class="col">
+                                    <div class="row">
+                                        <div class="col-2">
+                                            <label class="form-label fs-5">Open</label>
+                                        </div>
+                                        <div class="col">
+                                            {{ form.saturday_morn(class="form-select") }}
+                                        </div>
+                                        <div class="col-2">
+                                            <label class="form-label fs-5">Close</label>
+                                        </div>
+                                        <div class="col">
+                                            {{ form.saturday_eve(class="form-select") }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row pb-1">
+                                <div class="col-3">
+                                    <label class="form-label fs-5">Sunday:</label>
+                                </div>
+                                <div class="col">
+                                    <div class="row">
+                                        <div class="col-2">
+                                            <label class="form-label fs-5">Open</label>
+                                        </div>
+                                        <div class="col">
+                                            {{ form.sunday_morn(class="form-select") }}
+                                        </div>
+                                        <div class="col-2">
+                                            <label class="form-label fs-5">Close</label>
+                                        </div>
+                                        <div class="col">
+                                            {{ form.sunday_eve(class="form-select") }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row py-2 justify-content-center">
+                        <div class="col-9">
+                            {{ form.submit(class="btn btn-warning btn-lg w-100", value='Submit') }}
+                        </div>
+                        <div class="col-3">
+                            {{ form.cancel(class="btn btn-danger btn-lg w-100", value='Cancel') }}
+                        </div>
+                    </div>
+                </form>
+        </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}
+

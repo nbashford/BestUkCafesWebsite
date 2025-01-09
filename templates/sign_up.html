@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+{% block title %}Sign Up{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid">
+  <div class="row py-5"></div>
+  <div class="row">
+
+    <!-- Left side: Form content -->
+    <div class="col-6">
+      <div class="container-fluid">
+
+        <div class="row">
+          <div class="col-12 d-flex flex-column justify-content-center align-items-center pt-2 pb-3">
+            {% with messages = get_flashed_messages() %}
+              {% if messages %}
+                {% for message in messages %}
+                  <h1 class="display-5 text-standout">{{ message }}</h1>
+                {% endfor %}
+              {% else %}
+                <h1 class="display-3 py-4 text-standout pacifico-regular">Sign Up</h1>
+              {% endif %}
+            {% endwith %}
+          </div>
+        </div>
+
+        <div class="row g-3 justify-content-center w-100 pb-5">
+          <form action="{{ url_for('signup') }}" method="POST">
+                    {{ form.hidden_tag() }}
+            <div class="row py-2">
+              <div class="col-3"></div>
+              <div class="col-6">
+                <label class="form-label fs-4">Name</label>
+                {{ form.name(class="form-control") }}
+              </div>
+            </div>
+
+            <div class="row py-2">
+              <div class="col-3"></div>
+              <div class="col-6">
+                <label class="form-label fs-4">Email</label>
+                <div class="input-group">
+                  <span class="input-group-text">@</span>
+                  {{ form.email(class="form-control", placeholder="you@example.com") }}
+                </div>
+              </div>
+            </div>
+
+            <div class="row py-2">
+              <div class="col-3"></div>
+              <div class="col-6">
+                <label class="form-label fs-4">Password</label>
+                {{ form.password(class="form-control") }}
+              </div>
+            </div>
+
+
+            <div class="row py-5">
+              <div class="col-3"></div>
+              <div class="col-6 d-flex justify-content-center">
+                {{ form.submit(class="btn btn-warning btn-lg w-100") }}
+              </div>
+            </div>
+          </form>
+        </div>
+
+
+      </div>
+    </div>
+
+    <!-- Right side: Paragraph content -->
+    <div class="col-6">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-9 d-flex flex-column justify-content-center align-items-center pt-2 pb-3">
+            <h1 class="display-5 py-4 text-standout text-center pacifico-regular">Sign up and Unlock Features</h1>
+          </div>
+        </div>
+
+        <div class="row py-4"></div>
+
+        <div class="row">
+          <div class="col-9 d-flex flex-column justify-content-center align-items-center pt-2 pb-3">
+
+              <ul>
+                <li class="lead text-standout fs-4 py-2">Add comments to Cafes</li>
+                <li class="lead text-standout fs-4 py-2">Save your favourite Cafes</li>
+                <li class="lead text-standout fs-4 py-2">Add and Edit Cafe data</li>
+                <li class="lead text-standout fs-4 py-2">Receive exclusive New Cafe alerts</li>
+              </ul>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+
+  </div>
+</div>
+
+
+{% endblock %}

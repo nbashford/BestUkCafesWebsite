@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+
+    {% block styles %}
+    {{ bootstrap.load_css() }}
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/styles.css') }}"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Pacifico&display=swap" rel="stylesheet">
+    {% endblock %}
+    <style>
+        body {
+            position: relative; /* Make the body container relative */
+            margin: 0;
+            height: 100vh;
+        }
+
+        /* Apply background image to the pseudo-element */
+        body::before {
+            content: ''; /* Required for pseudo-element */
+            position: absolute; /* Position it absolutely */
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 300%;
+            background-image: url('{{ url_for("static", filename="images/mikesh-kaos-dUV3oohJzE8-unsplash.jpg") }}');
+            background-color: rgba(0, 0, 0, 0.8);
+            background-size: 115%;
+            background-position: 95% 25%;
+            background-attachment: fixed;
+            filter: grayscale(20%) sepia(35%) brightness(40%); /* Apply the filters only here filter: grayscale(20%) sepia(35%) brightness(60%) */
+
+            z-index: -1; /* Place the pseudo-element behind the content */
+        }
+
+      {% block background %}
+      {% endblock %}
+
+    </style>
+
+    <title>{% block title %}{% endblock %}</title>
+  </head>
+
+<!--  <body class="{% if request.endpoint == 'home' %}homepage{% else %}other-pages{% endif %}">-->
+  <body class="{% if request.endpoint == 'cafes' %}other-pages{% elif request.endpoint == 'favourites' %}other-pages{% elif request.endpoint == 'about.html' %}carousel-page{% else %}homepage{% endif %}">
+
+  {{ bootstrap.load_js() }}
+
+  <header class="p-3 text-bg-dark">
+    <div class="container">
+      <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+        <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+          <img src="{{ url_for('static', filename='/images/coffee-svgrepo-com.svg') }}" height="50" class="px-2">
+        </a>
+
+        <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+          <li><a href="{{ url_for('home') }}" class="nav-link px-10 text-white">HOME</a></li>
+          <li class="pl-2"><a href="{{ url_for('cafes') }}" class="nav-link px-2 text-white">All Cafes</a></li>
+          {% if current_user.is_authenticated %}
+            <li class="pl-2"><a href="{{ url_for('add_cafe') }}" class="nav-link px-2 text-white">Add Cafe</a></li>
+            <li class="pl-2"><a href="{{ url_for('favourites') }}" class="nav-link px-2 text-white">Favourites</a></li>
+          {% else %}
+            <li class="pl-2"><a href="{{ url_for('signup') }}" class="nav-link px-2 text-white">Add Cafe</a></li>
+          {% endif %}
+          <li class="pl-2"><a href="{{ url_for('about') }}" class="nav-link px-2 text-white">About</a></li>
+        </ul>
+
+          {% if current_user.is_authenticated %}
+        <div class="text-end d-flex justify-content-center align-items-center">
+          <div class="flex-shrink-0 dropdown">
+            <a href="#" class="d-block link-body-emphasis text-decoration-none dropdown-toggle show" data-bs-toggle="dropdown" aria-expanded="False">
+              <img src="{{ url_for('static', filename='images/person-circle.svg') }}" alt="mdo" width="32" height="32" class="rounded-circle">
+            </a>
+            <ul class="dropdown-menu text-small" data-popper-placement="bottom-end" style="position: absolute; inset: 0px 0px auto auto; margin: 0px; transform: translate3d(0.5px, 34px, 0px);">
+              <li><a class="dropdown-item" href="{{ url_for('favourites') }}">View Favourites</a></li>
+              <li><a class="dropdown-item" href="#">Settings</a></li>
+              <li><a class="dropdown-item" href="#">Profile</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="{{ url_for('logout') }}">Sign out</a></li>
+            </ul>
+          </div>
+          <div class="col-12">
+              <a href="{{ url_for('logout') }}" class="btn btn-secondary">Logout</a>
+          </div>
+        </div>
+          {% else %}
+        <div class="text-end">
+              <a href="{{ url_for('signup') }}" class="btn btn-warning">Sign Up</a>
+              <a href="{{ url_for('login') }}" class="btn btn-success">Login</a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </header>
+    {% block content %}{% endblock %}
+
+  <script>
+    {% block script %}
+    {% endblock %}
+
+window.addEventListener('load', function () {
+    if (document.body.classList.contains('other-pages')) {
+      // Get the height of the table
+      const table = document.querySelector('.table');
+
+      if (table) {
+        const contentHeight = table.offsetHeight;
+
+        if (contentHeight > 0) {
+          // Calculate the height of the background image pseudo-element dynamically
+          const imageHeight = contentHeight * 1.2; // Adjust this ratio as needed
+
+          // Get the viewport height
+          const viewportHeight = window.innerHeight;
+
+          // Determine the final height (at least the size of the screen)
+          const finalHeight = Math.max(imageHeight, viewportHeight);
+
+          // Set the background image pseudo-element height dynamically
+          const style = document.createElement('style');
+          style.innerHTML = `
+            body::before {
+              height: ${finalHeight}px;
+            }
+          `;
+          document.head.appendChild(style);
+        }
+      }
+    }
+  });
+  </script>
+
+  </body>
+</html>
+

@@ -1,0 +1,130 @@
+/* to override Bootstrap styles for some things */
+
+body {
+background-color: #333;
+color: white;
+}
+
+
+a {
+    color: #ffc107;
+}
+
+.jumbotron {
+  display: flex;
+  align-items: center;
+  margin: 0;
+  height: 100vh;
+  color: white;
+  background-color: #333;
+}
+
+.space-above {
+    margin-top: 20px;
+    padding-top: 20px;
+}
+
+.text-standout {
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+}
+
+.transparent-table {
+    background-color: rgba(0, 0, 0, 0.6) !important; /* Make the table semi-transparent */
+    border: none; /* Remove the default table border if needed */
+}
+
+.transparent-table td,
+.transparent-table th {
+    background-color: transparent !important; /* Ensure table cells are also transparent */
+}
+
+
+body.other-pages {
+  min-height: 100%; /* Full screen height */
+  overflow-y: auto; /* Allow vertical scrolling */
+  background-attachment: scroll; /* Disable fixed background on scrollable pages */
+}
+
+body.homepage {
+  min-height: 100vh; /* Full screen height */
+  overflow: hidden; /* Disable scrolling */
+}
+
+body.carousel-page {
+    overflow: auto; /* Allow scrolling and proper JS functioning for carousel */
+}
+
+.bg-custom-yellow {
+  background-color: #CFCAB0;
+}
+
+.vertical-line {
+  background-color: #fff;  /* Color for the vertical line */
+  width: 3px;               /* Set the width of the line */
+  height: 100%;             /* Make the line take full height of the row */
+}
+
+.custom-carousel {
+    max-height: 400px; /* Adjust the height as needed */
+    height: 100%;
+    overflow: hidden;
+}
+
+.custom-carousel img {
+    height: 100%;
+    object-fit: cover; /* Ensures the image scales without distortion */
+    width: 100%; /* Ensures full width coverage */
+    object-position: center bottom;
+}
+
+
+
+.carousel-item {
+    position: relative;
+}
+
+.carousel-caption {
+    position: absolute;
+    top: 35%; /* Centers vertically */
+    left: 50%; /* Centers horizontally */
+    transform: translate(-50%, -50%); /* Adjust both axes to perfectly center the text */
+    background: rgba(0, 0, 0, 0.6); /* Darkened background */
+    color: white;
+    padding: 60px;
+    border-radius: 5px;
+
+
+    transition: opacity 0.5s ease-in-out; /* Smooth transition effect */
+    z-index: 10; /* Ensures it's above the image */
+}
+
+.pacifico-regular {
+  font-family: "Pacifico", cursive;
+  font-weight: 400;
+  font-style: normal;
+}
+
+
+.barlow-regular {
+  font-family: "Barlow", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.barlow-medium {
+  font-family: "Barlow", sans-serif;
+  font-weight: 500;
+  font-style: normal;
+}
+
+.barlow-semibold {
+  font-family: "Barlow", sans-serif;
+  font-weight: 600;
+  font-style: normal;
+}
+
+.barlow-bold {
+  font-family: "Barlow", sans-serif;
+  font-weight: 700;
+  font-style: normal;
+}

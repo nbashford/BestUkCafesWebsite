@@ -1,0 +1,170 @@
+{% extends 'base.html' %}
+
+{% block title %}All Cafes{% endblock %}
+
+{% block content %}
+<div class="col-12 d-flex justify-content-center align-items-center py-4">
+  <h1 class="text-standout pacifico-regular">Favourite Cafes</h1>
+</div>
+<hr style="border-top: 4px solid #fff; opacity: 1; width: 85%; margin: 0 auto;">
+
+<div class="container">
+  <div class="row pb-3">
+
+    <div class="col-12">
+      <form action="{{ url_for('favourites') }}" method="POST" >
+        {{ form.hidden_tag() }}
+          <div class="d-flex mb-3">
+
+              <div class="p-2">
+              <label class="form-label">{{ form.cafe_name.label }}</label>
+              {{ form.cafe_name(class="form-select", style="max-width: 200px;") }}
+            </div>
+
+            <div class="p-2">
+              <label class="form-label">{{ form.city_location.label }}</label>
+              {{ form.city_location(class="form-select", style="max-width: 200px;") }}
+            </div>
+
+
+            <div class="p-2">
+              <label class="form-label">{{ form.has_wifi.label }}</label>
+              {{ form.has_wifi(class="form-select") }}
+            </div>
+
+              <div class="p-2">
+              <label class="form-label">{{ form.need_laptop.label }}</label>
+              {{ form.need_laptop(class="form-select") }}
+            </div>
+
+              <div class="p-2">
+              <label class="form-label">{{ form.need_pets.label }}</label>
+              {{ form.need_pets(class="form-select") }}
+            </div>
+
+              <div class="p-2">
+              <label class="form-label">{{ form.day_open.label }}</label>
+              {{ form.day_open(class="form-select") }}
+            </div>
+
+            <div class="ms-auto p-2">
+              <br>
+              {{ form.submit_one(class="btn btn-warning", value="Apply Filters") }}</div>
+
+            <div class="p-2">
+              <br>
+              {{ form.clear_filters(class="btn btn-secondary", value="Clear Filters") }}</div>
+          </div>
+      </form>
+    </div>
+
+    <div class="col-12 d-flex justify-content-center align-items-center">
+      <table class="table transparent-table table-hover align-middle table-dark">
+        <colgroup>
+            {% if current_user.is_authenticated %}
+              <col style="width: 5%;">
+              <col style="width: {{ 18 * 0.95 }}%;">
+              <col style="width: {{ 18 * 0.95 }}%;">
+              <col style="width: {{ 10 * 0.95 }}%;">
+              <col style="width: {{ 21 * 0.95 }}%;">
+              <col style="width: {{ 11 * 0.95 }}%;">
+              <col style="width: {{ 11 * 0.95 }}%;">
+              <col style="width: {{ 11 * 0.95 }}%;">
+            {% else %}
+              <col style="width: 18%;">
+              <col style="width: 18%;">
+              <col style="width: 10%;">
+              <col style="width: 21%;">
+              <col style="width: 11%;">
+              <col style="width: 11%;">
+              <col style="width: 11%;">
+            {% endif %}
+        </colgroup>
+
+        <thead>
+        <tr>
+            {% if current_user.is_authenticated %}
+            <td class="lead fs-3 text-center fw-bold"></td>
+            {% endif %}
+          <td class="lead fs-3 text-center fw-bold">Cafe Name</td>
+          <td class="lead fs-3 text-center fw-bold">Address</td>
+          <td class="lead fs-3 text-center fw-bold">Location</td>
+          <td class="lead fs-3 text-center fw-bold">Opening</td>
+          <td class="lead fs-3 text-center fw-bold">Wifi</td>
+          <td class="lead fs-3 text-center fw-bold">Laptops</td>
+          <td class="lead fs-3 text-center fw-bold">Pets</td>
+        </tr>
+         </thead>
+        <tbody class="table-group-divider">
+        {% for row in cafes %}
+        <tr class="py-3">
+            {% if current_user.is_authenticated %}
+             <td class="text-center fw-semibold fs-5">
+                 <form action="{{ url_for('favourites') }}" method="POST" style="display: inline;">
+                <input type="hidden" name="cafe_id" value="{{ row.id }}">
+                     <input type="hidden" name="page_num" value="{{ page_num }}">
+                <button type="submit" style="background: none; border: none; padding: 0;">
+                    <img src="{{ url_for('static', filename='images/heart-svgrepo-com-2.svg') }}" alt="Favourite" width="32" height="32" class="rounded-circle">
+                </button>
+            </form>
+            </td>
+            {% endif %}
+
+          <td class="text-center fw-semibold fs-5">
+
+            <p class="fw-semibold fs-5">
+              {{ row.name }}
+            </p>
+
+          </td>
+          <td class="text-center fw-medium">{{ row.street }},<br>{{ row.city }}, {{ row.postcode }}</td>
+          <td class="text-center fw-medium text-standout"><a href="{{ row.link }}">Maps Link</a></td>
+          <td class="fw-medium">
+
+            {{ row.opening.split('|') | join('<br>') | safe }}
+          </td>
+          <td class="text-center fw-medium">{{ row.wifi }}</td>
+          <td class="text-center fw-medium">{{ row.laptop }}</td>
+          <td class="text-center fw-medium">{{ row.pets }}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+
+    <div class="container">
+      <div class="row">
+
+        <div class="col-4">
+          <p><a href="{{ url_for('home') }}">Return to index page</a></p>
+        </div>
+
+        <div class="col-4">
+        </div>
+
+        <div class="col-4">
+          <form action="{{ url_for('favourites') }}" method="POST" >
+            {{ form_page.hidden_tag() }}
+            <div class="d-flex mb-3">
+              <div class="ms-auto p-2">
+                <label class="form-label">{{ form_page.page_select.label }}</label>
+              </div>
+              <div class="p-2">{{ form_page.page_select(class="form-select") }}</div>
+              <div class="p-2">{{ form_page.submit(class="btn btn-warning") }}</div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+
+</div>
+{% endblock %}
+
+{% block script %}
+
+
+{% endblock %}
